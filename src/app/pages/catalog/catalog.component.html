@@ -1,0 +1,65 @@
+
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-md-3">
+       <strong style="font-size: 30px;">Carmi Art</strong>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Buscar" status="basic"/>
+      </div>
+      <div class="col-md-2">
+        <button nbButton size="medium" fullWidth  status="primary"  style="text-transform: initial;" (click)="openLogin('')">Iniciar sesión</button>
+      </div>
+      <div class="col-md-1" style="text-align: right;">
+        <button nbButton size="medium" status="primary"><nb-icon icon="shopping-cart-outline"></nb-icon></button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body style="background: var(--layout-background-color)">
+    <div class="row">
+      <div class="col-md-6">
+        <button nbButton size="small" status="warning" outline><nb-icon icon="eye-outline"></nb-icon> Ver todo</button>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+    <hr>
+    <div class="row">
+      @for (item of products; track $index) {
+        <div class="col-6 col-md-3">
+        <nb-card class="cardHover">
+          <nb-card-header (click)="openModal(item)">
+            <img  [src]="item?.thumbnail" alt="Photo of a Shiba Inu"
+            height="auto" width="100%">
+          </nb-card-header>
+          <nb-card-body>
+            <div class="d-flex">
+              @for (color of item?.colors; track $index) {
+                <div>
+                   sa
+                </div>
+
+              }
+            </div>
+            <strong> {{item.title}}</strong><hr>
+            <label class="label">{{item.description}}</label>
+          </nb-card-body>
+          <nb-card-footer>
+            <div class="row">
+              <div class="col-md-6">
+                <button nbButton size="tiny" fullWidth status="info" style="text-transform: initial;" (click)="openModal(item)">
+                  <nb-icon icon="eye-outline"></nb-icon>Detalle</button>
+              </div>
+              <div class="col-md-6">
+                <button nbButton size="tiny" fullWidth status="primary" style="text-transform: initial;">
+                  <nb-icon icon="shopping-cart-outline"></nb-icon> Agregar</button>
+              </div>
+            </div>
+          </nb-card-footer>
+        </nb-card>
+      </div>
+      }
+    </div>
+  </nb-card-body>
+</nb-card>

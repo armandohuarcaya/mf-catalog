@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+// 1. importar theming y globals de Nebular
+@use 'app/core/themes' as *;
+
+@use '@nebular/theme/styles/globals' as *;
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+@include nb-install() {
+  @include nb-theme-global();
+}

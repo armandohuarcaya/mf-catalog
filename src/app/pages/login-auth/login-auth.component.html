@@ -1,0 +1,46 @@
+<nb-card class="scrollModalPopup" style="width: 20vw;">
+  <!-- <nb-card-header>
+    <div class="d-flex justify-content-between align-items-center w-100">
+      <div class="d-flex align-items-center">
+        <nb-icon icon="file-text-outline" status="info" style="font-size: 2rem;" class="me-2 "></nb-icon>
+        <div class="lh-1">
+          <span class="mb-0 fw-bold">Login</span>
+        </div>
+      </div>
+      <button nbButton status="primary" size="tiny" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </nb-card-header> -->
+  <nb-card-body>
+    <div class="text-center">
+
+      <h3>Iniciar sesión</h3>
+
+      <div class="social-buttons">
+   <!-- Botón oficial Google -->
+        <div id="googleBtn"></div>
+
+          <!-- Botón personalizado -->
+      <!-- <button (click)="loginGoogle()" class="btn-google">
+        Continuar con Google
+      </button> -->
+
+         <!-- Botón oficial Apple -->
+        <div id="appleid-signin"></div>
+
+        <!-- Botón personalizado tipo Google -->
+    <!-- <button (click)="loginApple()" class="btn-apple">
+      🍎 Continuar con Apple
+    </button> -->
+
+      </div>
+
+    </div>
+
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="basic" size="tiny" (click)="closeModal()">Cancelar
+    </button>
+  </nb-card-footer>
+</nb-card>

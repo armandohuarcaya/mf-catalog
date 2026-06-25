@@ -1,0 +1,99 @@
+<nb-card class="scrollModalPopup" style="width: 70vw;">
+  <nb-card-header>
+    <div class="d-flex justify-content-between align-items-center w-100">
+      <div class="d-flex align-items-center">
+        <nb-icon icon="file-text-outline" status="info" style="font-size: 2rem;" class="me-2 "></nb-icon>
+        <div class="lh-1">
+          <span class="mb-0 fw-bold">Detalle</span>
+        </div>
+      </div>
+      <button nbButton status="primary" size="tiny" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-md-5">
+        @if (item?.images.length>0) {
+          <!-- {{item?.images[0][0]}} -->
+          <ngb-carousel [showNavigationIndicators]="true">
+            @for (foto of item?.images[0]; track $index) {
+              <ng-template ngbSlide>
+                <div>
+                  <img [src]="foto" alt="Random first slide" height="500" width="100%">
+                </div>
+                <!-- <div class="carousel-caption">
+                  <h3>First Slide</h3>
+                  <p> Angular 10 Carousel Example </p>
+                </div> -->
+              </ng-template>
+            }
+            <!-- <ng-template ngbSlide>
+              <div class="wrapper">
+                <img [src]="item?.images[1]" alt="Random second slide">
+              </div>
+              <div class="carousel-caption">
+                <h3>Second Slide</h3>
+                <p> Check out Techiediaries</p>
+              </div>
+            </ng-template>
+            <ng-template ngbSlide>
+              <div class="wrapper">
+                <img [src]="item?.images[2]"  alt="Random third slide">
+              </div>
+              <div class="carousel-caption">
+                <h3>Third Slide</h3>
+                <p>for full tutorial...</p>
+              </div>
+            </ng-template> -->
+          </ngb-carousel>
+        }
+      </div>
+      <div class="col-md-7">
+        <div class="row">
+          <div class="col-md-6">
+
+            <strong>{{item?.title}}</strong><hr>
+            <p style="text-align: justify;">{{item?.description}}</p><br><br>
+
+          </div>
+          <div class="col-md-6">
+            <strong>Vendido por: </strong>{{item?.brand}}
+            <hr>
+            <label class="label" style="font-size: 35px;">{{item?.price | currency:'PEN':'symbol':'1.2-2':'es-PE'}}</label>
+            <br><br>
+            <button nbButton status="primary" size="small"><nb-icon icon="shopping-cart-outline"></nb-icon> Añadir a carro</button>
+          </div>
+          <nb-tabset>
+            <nb-tab tabTitle="Descripción" style="padding-left: 0px; padding-right: 0px;">
+             <div class="table-responsive">
+              <table class="table table-striped table-bordered table-sm">
+                <thead>
+                  <tr>
+                    <th>Atributo</th>
+                    <th>Detalle</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Alto</td>
+                    <td>{{item?.dimensions?.height}}</td>
+                  </tr>
+                  <tr>
+                    <td>Ancho</td>
+                    <td>{{item?.dimensions?.width}}</td>
+                  </tr>
+                </tbody>
+              </table>
+             </div>
+            </nb-tab>
+            <nb-tab tabTitle="Detalle">
+              <p>List of <strong>orders</strong>.</p>
+            </nb-tab>
+          </nb-tabset>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

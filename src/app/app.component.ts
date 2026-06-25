@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { NbSidebarModule, NbLayoutModule, NbButtonModule, NbMenuModule, NbThemeModule } from '@nebular/theme';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NbLayoutModule, NbThemeModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

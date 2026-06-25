@@ -1,0 +1,22 @@
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.btn-google {
+  background: #db4437;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+}
+
+
+/* 👇 controla el botón de Apple */
+#appleid-signin {
+  width: 260px !important;
+  height: 40px !important;
+  overflow: hidden !important;
+  border-radius: 6px;
+}
