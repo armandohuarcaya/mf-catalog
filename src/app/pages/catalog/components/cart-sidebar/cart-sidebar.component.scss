@@ -1,0 +1,394 @@
+@use '@nebular/theme/styles/theming' as *;
+
+// Cart Sidebar — usa variables de tema Nebular
+
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 100vw;
+  background: white;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -4px 0 30px rgba(0, 0, 0, 0.15);
+
+  &.open { transform: translateX(0); }
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid nb-theme(border-basic-color-3);
+
+  .cart-title {
+    margin: 0;
+    color: nb-theme(color-primary-500);
+  }
+}
+
+.cart-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: nb-theme(text-hint-color);
+  padding: 2rem;
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  p { font-size: 1.1rem; }
+  small { font-size: 0.85rem; }
+
+  .text-basic { color: nb-theme(text-basic-color); }
+  .text-hint { color: nb-theme(text-hint-color); }
+}
+
+.cart-items-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem;
+  gap: 0.75rem;
+}
+
+.cart-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem !important;
+  border-radius: 12px !important;
+  background: nb-theme(background-basic-color-2);
+  border: none !important;
+
+  &:hover { background: nb-theme(background-basic-color-3); }
+}
+
+.item-image {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: white;
+  border: 1px solid nb-theme(border-basic-color-3);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.item-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item-details {
+  min-width: 0;
+
+  .item-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+    color: nb-theme(text-basic-color);
+  }
+
+  .item-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .item-price {
+    font-size: 0.8rem;
+    color: nb-theme(text-hint-color);
+    font-weight: 500;
+  }
+
+  .item-subtotal {
+    font-weight: 700;
+    color: nb-theme(color-primary-500);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+}
+
+.item-quantity {
+  button {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 6px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    nb-icon { font-size: 14px; }
+  }
+
+  .qty-value {
+    width: 28px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+}
+
+.cart-footer {
+  padding: 1.5rem;
+  border-top: 1px solid nb-theme(border-basic-color-3);
+  background: nb-theme(background-basic-color-2);
+
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+
+    strong {
+      font-size: 1.4rem;
+      color: nb-theme(color-primary-500);
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Checkout Modal
+:host ::ng-deep .checkout-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+:host ::ng-deep .checkout-modal {
+  background: white;
+  border-radius: 24px;
+  width: 420px;
+  max-width: 92vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+  animation: modalSlideUp 0.3s ease;
+}
+
+:host ::ng-deep .checkout-header {
+  background: linear-gradient(135deg, nb-theme(color-primary-500), nb-theme(color-primary-700));
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-radius: 24px 24px 0 0;
+
+  .checkout-icon { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+  h2 { color: white; margin: 0; font-size: 1.5rem; font-weight: 800; }
+}
+
+:host ::ng-deep .checkout-body {
+  padding: 1.5rem;
+}
+
+:host ::ng-deep .checkout-items {
+  font-size: 0.9rem;
+  color: nb-theme(text-basic-color);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: nb-theme(background-basic-color-2);
+  border-radius: 12px;
+}
+
+:host ::ng-deep .checkout-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-top: 2px solid nb-theme(border-basic-color-3);
+  font-size: 1.1rem;
+
+  strong {
+    font-size: 1.5rem;
+    color: nb-theme(color-primary-500);
+  }
+}
+
+:host ::ng-deep .checkout-thanks {
+  text-align: center;
+  color: nb-theme(text-hint-color);
+  font-size: 0.9rem;
+  margin: 1rem 0 0;
+
+  strong { color: nb-theme(color-primary-500); }
+}
+
+:host ::ng-deep .checkout-footer {
+  padding: 0 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .checkout-btn {
+  padding: 0.85rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:active { transform: scale(0.98); }
+}
+
+:host ::ng-deep .checkout-btn-primary {
+  background: nb-theme(color-success-500);
+  color: white;
+
+  &:hover {
+    box-shadow: 0 6px 20px nb-theme(color-success-transparent-400);
+    transform: translateY(-1px);
+  }
+}
+
+:host ::ng-deep .checkout-btn-ghost {
+  background: transparent;
+  color: nb-theme(text-hint-color);
+
+  &:hover { color: nb-theme(text-basic-color); }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Responsive: mobile
+@media (max-width: 576px) {
+  .cart-sidebar { width: 100vw; }
+
+  .cart-header {
+    padding: 0.75rem 1rem;
+
+    .cart-title {
+      font-size: 1rem;
+      nb-icon { font-size: 1.1rem; }
+    }
+  }
+
+  .cart-items-list {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .cart-item {
+    gap: 0.5rem;
+    padding: 0.6rem !important;
+  }
+
+  .item-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .item-body {
+    gap: 0.35rem;
+  }
+
+  .item-details {
+    .item-name { font-size: 0.8rem; }
+    .item-price-row { flex-direction: column; align-items: flex-start; gap: 0.15rem; }
+    .item-price { font-size: 0.75rem; }
+    .item-subtotal { font-size: 0.8rem; }
+  }
+
+  .item-quantity {
+    button {
+      width: 32px;
+      height: 32px;
+      nb-icon { font-size: 16px; }
+    }
+    .qty-value { width: 26px; font-size: 0.85rem; }
+  }
+
+  .cart-footer {
+    padding: 1rem;
+
+    .cart-total {
+      font-size: 0.95rem;
+      strong { font-size: 1.2rem; }
+    }
+  }
+
+  // Checkout modal compacto en móvil
+  :host ::ng-deep .checkout-modal {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 16px 16px 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    animation: modalSlideUpMobile 0.3s ease;
+  }
+
+  :host ::ng-deep .checkout-header {
+    padding: 1.25rem 1rem;
+    h2 { font-size: 1.2rem; }
+    .checkout-icon { font-size: 2rem; }
+  }
+
+  :host ::ng-deep .checkout-body { padding: 1rem; }
+  :host ::ng-deep .checkout-footer { padding: 0 1rem 1rem; }
+}
+
+@keyframes modalSlideUpMobile {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

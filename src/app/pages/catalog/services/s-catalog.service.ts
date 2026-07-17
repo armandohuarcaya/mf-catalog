@@ -6,15 +6,18 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root'
 })
 export class SCatalogService {
-  api:any = {
-    demo: 'https://dummyjson.com',
+  api: any = {
     product: `${environment.apiUrls.art}/api/product`
   };
+
   constructor(private httpClient: HttpClient) { }
-  // getProducts$(params: any) {
-  //   return this.httpClient.get(`${this.api.demo}/products`, {params});
-  // }
+
+  /**
+   * Obtiene productos desde la API con paginación.
+   * @param params { page: number, size: number } — página y cantidad por página
+   * @returns Observable con { data: [], total, totalPages }
+   */
   getProducts$(params: any) {
-    return this.httpClient.get(`${this.api.product}/search`, {params});
+    return this.httpClient.get(`${this.api.product}/search`, { params });
   }
 }
