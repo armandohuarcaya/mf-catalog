@@ -1,99 +1,144 @@
-<nb-card class="scrollModalPopup" style="width: 70vw;">
-  <nb-card-header>
+<nb-card class="detail-modal">
+  <nb-card-header class="detail-header">
     <div class="d-flex justify-content-between align-items-center w-100">
-      <div class="d-flex align-items-center">
-        <nb-icon icon="file-text-outline" status="info" style="font-size: 2rem;" class="me-2 "></nb-icon>
-        <div class="lh-1">
-          <span class="mb-0 fw-bold">Detalle</span>
+      <div class="d-flex align-items-center gap-2">
+        <nb-icon icon="file-text-outline" status="info" style="font-size: 1.5rem;"></nb-icon>
+        <div>
+          <span class="fw-bold">Detalle del Producto</span>
         </div>
       </div>
-      <button nbButton status="primary" size="tiny" (click)="closeModal()">
+      <button nbButton status="primary" size="tiny" (click)="closeModal()" class="close-btn">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
   </nb-card-header>
-  <nb-card-body>
-    <div class="row">
-      <div class="col-md-5">
-        @if (item?.images.length>0) {
-          <!-- {{item?.images[0][0]}} -->
-          <ngb-carousel [showNavigationIndicators]="true">
-            @for (foto of item?.images[0]; track $index) {
-              <ng-template ngbSlide>
-                <div>
-                  <img [src]="foto" alt="Random first slide" height="500" width="100%">
-                </div>
-                <!-- <div class="carousel-caption">
-                  <h3>First Slide</h3>
-                  <p> Angular 10 Carousel Example </p>
-                </div> -->
-              </ng-template>
+
+  <nb-card-body class="detail-body">
+    <div class="row g-4">
+      <!-- Gallery Column -->
+      <div class="col-md-6">
+        @if (item?.gallery?.length > 0) {
+          <div class="gallery-container">
+            <ngb-carousel [showNavigationIndicators]="true" class="main-carousel">
+              @for (foto of item?.gallery; track $index) {
+                <ng-template ngbSlide>
+                  <div class="carousel-image-wrapper">
+                    <img [src]="foto.url" alt="Producto" class="carousel-image">
+                  </div>
+                </ng-template>
+              }
+            </ngb-carousel>
+          </div>
+          <!-- Thumbnail Strip -->
+          <div class="thumbnail-strip">
+            @for (foto of item?.gallery; track $index) {
+              <div class="thumbnail-item"
+                   [class.active]="selectedImage() === $index"
+                   (click)="selectImage($index)">
+                <img [src]="foto.url" alt="Thumbnail">
+              </div>
             }
-            <!-- <ng-template ngbSlide>
-              <div class="wrapper">
-                <img [src]="item?.images[1]" alt="Random second slide">
-              </div>
-              <div class="carousel-caption">
-                <h3>Second Slide</h3>
-                <p> Check out Techiediaries</p>
-              </div>
-            </ng-template>
-            <ng-template ngbSlide>
-              <div class="wrapper">
-                <img [src]="item?.images[2]"  alt="Random third slide">
-              </div>
-              <div class="carousel-caption">
-                <h3>Third Slide</h3>
-                <p>for full tutorial...</p>
-              </div>
-            </ng-template> -->
-          </ngb-carousel>
+          </div>
+        } @else {
+          <div class="gallery-container">
+            <div class="no-image-placeholder">
+              <nb-icon icon="image-outline" class="no-image-icon"></nb-icon>
+              <p>Sin imágenes disponibles</p>
+            </div>
+          </div>
         }
       </div>
-      <div class="col-md-7">
-        <div class="row">
-          <div class="col-md-6">
 
-            <strong>{{item?.title}}</strong><hr>
-            <p style="text-align: justify;">{{item?.description}}</p><br><br>
+      <!-- Info Column -->
+      <div class="col-md-6">
+        <div class="product-info-section">
+          @if (item?.brand) {
+            <span class="product-brand">{{item?.brand}}</span>
+          }
 
+          <h2 class="product-title">{{item?.title || item?.name}}</h2>
+
+          @if (item?.rating) {
+            <div class="product-rating">
+              @for (_ of [].constructor(Math.floor((item?.rating || 0))); track $index) {
+                <nb-icon icon="star" status="warning"></nb-icon>
+              }
+              <span class="rating-text">({{item?.reviews || 0}} reseñas)</span>
+            </div>
+          }
+
+          <div class="product-price-section">
+            <span class="product-price">{{item?.price | currency:'PEN':'symbol':'1.2-2':'es-PE'}}</span>
+            @if (item?.oldPrice) {
+              <span class="product-old-price">{{item?.oldPrice | currency:'PEN':'symbol':'1.2-2':'es-PE'}}</span>
+            }
           </div>
-          <div class="col-md-6">
-            <strong>Vendido por: </strong>{{item?.brand}}
-            <hr>
-            <label class="label" style="font-size: 35px;">{{item?.price | currency:'PEN':'symbol':'1.2-2':'es-PE'}}</label>
-            <br><br>
-            <button nbButton status="primary" size="small"><nb-icon icon="shopping-cart-outline"></nb-icon> Añadir a carro</button>
+
+          <p class="product-description">{{item?.description}}</p>
+
+          <!-- Quantity Selector -->
+          <div class="quantity-section">
+            <label class="quantity-label">Cantidad:</label>
+            <div class="quantity-selector">
+              <button nbButton ghost size="small" status="primary"
+                      (click)="decreaseQuantity()"
+                      [disabled]="quantity() <= 1">
+                <nb-icon icon="minus-outline"></nb-icon>
+              </button>
+              <input type="text" class="quantity-input"
+                     [ngModel]="quantity()"
+                     (ngModelChange)="onQuantityChange($event)"
+                     inputmode="numeric">
+              <button nbButton ghost size="small" status="primary"
+                      (click)="increaseQuantity()"
+                      [disabled]="quantity() >= 99">
+                <nb-icon icon="plus-outline"></nb-icon>
+              </button>
+            </div>
           </div>
-          <nb-tabset>
-            <nb-tab tabTitle="Descripción" style="padding-left: 0px; padding-right: 0px;">
-             <div class="table-responsive">
-              <table class="table table-striped table-bordered table-sm">
-                <thead>
-                  <tr>
-                    <th>Atributo</th>
-                    <th>Detalle</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Alto</td>
-                    <td>{{item?.dimensions?.height}}</td>
-                  </tr>
-                  <tr>
-                    <td>Ancho</td>
-                    <td>{{item?.dimensions?.width}}</td>
-                  </tr>
-                </tbody>
-              </table>
-             </div>
+
+          <!-- Add to Cart Button -->
+          <button nbButton status="primary" size="medium" fullWidth
+                  class="add-to-cart-btn"
+                  (click)="addToCart()">
+            <nb-icon icon="shopping-cart-outline"></nb-icon>
+            Agregar al carrito — {{(item?.price * quantity()) | currency:'PEN':'symbol':'1.2-2':'es-PE'}}
+          </button>
+
+          <!-- Tabs -->
+          <nb-tabset class="product-tabs" fullWidth>
+            <nb-tab tabTitle="Descripción" class="tab-content">
+              <div class="table-responsive">
+                <table class="specs-table">
+                  <tbody>
+                    <tr>
+                      <td class="spec-label">Alto</td>
+                      <td class="spec-value">{{item?.dimensions?.height || '—'}}</td>
+                    </tr>
+                    <tr>
+                      <td class="spec-label">Ancho</td>
+                      <td class="spec-value">{{item?.dimensions?.width || '—'}}</td>
+                    </tr>
+                    <tr>
+                      <td class="spec-label">Categoría</td>
+                      <td class="spec-value">{{item?.category || '—'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </nb-tab>
-            <nb-tab tabTitle="Detalle">
-              <p>List of <strong>orders</strong>.</p>
+            <nb-tab tabTitle="Detalle" class="tab-content">
+              <p class="tab-description">{{item?.description || 'Sin información adicional disponible.'}}</p>
             </nb-tab>
           </nb-tabset>
         </div>
       </div>
     </div>
   </nb-card-body>
+
+  <nb-card-footer class="detail-footer">
+    <button nbButton status="basic" size="small" (click)="closeModal()">
+      Cerrar
+    </button>
+  </nb-card-footer>
 </nb-card>

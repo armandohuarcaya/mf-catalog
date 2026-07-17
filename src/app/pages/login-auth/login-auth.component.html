@@ -1,46 +1,122 @@
-<nb-card class="scrollModalPopup" style="width: 20vw;">
-  <!-- <nb-card-header>
-    <div class="d-flex justify-content-between align-items-center w-100">
-      <div class="d-flex align-items-center">
-        <nb-icon icon="file-text-outline" status="info" style="font-size: 2rem;" class="me-2 "></nb-icon>
-        <div class="lh-1">
-          <span class="mb-0 fw-bold">Login</span>
+<nb-card class="login-card">
+  <nb-card-header class="login-header">
+    <div class="header-brand">
+      <span class="brand-icon">✦</span>
+      <span>Carmi Art</span>
+    </div>
+    <button nbButton ghost status="basic" size="tiny" class="close-btn" (click)="closeModal()">
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <nb-card-body class="login-body">
+    @if (step() === 'select') {
+      <!-- Step 1: Select Login Method -->
+      <div class="step-content">
+        <h3 class="step-title">Iniciar sesión</h3>
+        <p class="step-subtitle">Accede a tu cuenta para continuar</p>
+
+        <!-- Google Sign-In (official button) -->
+        <div class="google-btn-wrapper">
+          <div id="googleBtn" class="google-official-btn"></div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">
+          <span class="divider-line"></span>
+          <span class="divider-text">o</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <!-- Email form -->
+        <div class="email-form">
+          <label class="input-label">Correo electrónico</label>
+          <input type="email"
+                 nbInput
+                 fieldSize="medium"
+                 fullWidth
+                 placeholder="tu@correo.com"
+                 status="basic"
+                 [(ngModel)]="email"
+                 (keyup.enter)="goToPassword()"
+                 class="email-input">
+          @if (loginError()) {
+            <span class="error-msg">{{ loginError() }}</span>
+          }
+          <button nbButton status="primary"
+                  size="medium"
+                  fullWidth
+                  class="next-btn"
+                  (click)="goToPassword()">
+            Siguiente
+            <nb-icon icon="arrow-forward-outline" class="btn-icon-right"></nb-icon>
+          </button>
         </div>
       </div>
-      <button nbButton status="primary" size="tiny" (click)="closeModal()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  </nb-card-header> -->
-  <nb-card-body>
-    <div class="text-center">
+    } @else {
+      <!-- Step 2: Email + Password -->
+      <div class="step-content">
+        <button nbButton ghost size="tiny" status="basic" class="back-btn" (click)="goBack()">
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+          Volver
+        </button>
 
-      <h3>Iniciar sesión</h3>
+        <h3 class="step-title">Ingresa tu contraseña</h3>
+        <p class="step-subtitle">Completa tu acceso</p>
 
-      <div class="social-buttons">
-   <!-- Botón oficial Google -->
-        <div id="googleBtn"></div>
+        <div class="credentials-form">
+          <!-- Email (solo lectura, visible) -->
+          <label class="input-label">Correo electrónico</label>
+          <div class="email-display">
+            <nb-icon icon="email-outline" class="email-icon"></nb-icon>
+            <span>{{ email }}</span>
+            <button nbButton ghost size="tiny" status="basic" class="edit-email-btn" (click)="goBack()" title="Cambiar correo">
+              <nb-icon icon="edit-outline"></nb-icon>
+            </button>
+          </div>
 
-          <!-- Botón personalizado -->
-      <!-- <button (click)="loginGoogle()" class="btn-google">
-        Continuar con Google
-      </button> -->
-
-         <!-- Botón oficial Apple -->
-        <div id="appleid-signin"></div>
-
-        <!-- Botón personalizado tipo Google -->
-    <!-- <button (click)="loginApple()" class="btn-apple">
-      🍎 Continuar con Apple
-    </button> -->
-
+          <!-- Contraseña -->
+          <label class="input-label">Contraseña</label>
+          <div class="password-wrapper">
+            <input type="password"
+                   nbInput
+                   fieldSize="medium"
+                   fullWidth
+                   placeholder="••••••••"
+                   status="basic"
+                   [(ngModel)]="password"
+                   (keyup.enter)="loginWithEmail()"
+                   class="password-input"
+                   autofocus>
+          </div>
+          @if (loginError()) {
+            <span class="error-msg">{{ loginError() }}</span>
+          }
+          <button nbButton status="primary"
+                  size="medium"
+                  fullWidth
+                  class="login-btn-action"
+                  [disabled]="isLoggingIn()"
+                  (click)="loginWithEmail()">
+            @if (isLoggingIn()) {
+              <nb-icon icon="loader-outline" class="spinner-icon"></nb-icon>
+              Ingresando...
+            } @else {
+              Iniciar sesión
+              <nb-icon icon="arrow-forward-outline" class="btn-icon-right"></nb-icon>
+            }
+          </button>
+        </div>
       </div>
-
-    </div>
-
+    }
   </nb-card-body>
-  <nb-card-footer class="text-center">
-    <button nbButton status="basic" size="tiny" (click)="closeModal()">Cancelar
-    </button>
+
+  <nb-card-footer class="login-footer">
+    <p class="footer-text">
+      Al continuar, aceptas nuestros
+      <a href="#" class="footer-link">Términos</a> y
+      <a href="#" class="footer-link">Privacidad</a>
+    </p>
+    <button nbButton ghost status="basic" size="tiny" (click)="closeModal()">Cancelar</button>
   </nb-card-footer>
 </nb-card>

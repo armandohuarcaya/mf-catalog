@@ -1,0 +1,85 @@
+<!-- Overlay -->
+@if (isOpen()) {
+  <div class="cart-overlay" (click)="close()"></div>
+}
+
+<!-- Cart Sidebar -->
+<div class="cart-sidebar" [class.open]="isOpen()">
+  <div class="cart-header">
+    <h5 class="cart-title fw-bold d-flex align-items-center gap-2">
+      <nb-icon icon="shopping-cart-outline"></nb-icon>
+      Carrito de Compras
+    </h5>
+    <button nbButton ghost status="basic" size="tiny" (click)="close()">
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </div>
+
+  @if (cartService.isEmpty()) {
+    <div class="cart-empty">
+      <div class="empty-cart-illustration">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="40" width="80" height="60" rx="8" fill="#EDF1F7" stroke="#C5CEE0" stroke-width="2"/>
+          <path d="M20 48L60 68L100 48" stroke="#C5CEE0" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="40" cy="100" r="6" fill="#C5CEE0"/>
+          <circle cx="80" cy="100" r="6" fill="#C5CEE0"/>
+          <path d="M33 10L60 40L87 10" stroke="#E0B457" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </path>
+          <circle cx="60" cy="38" r="4" fill="#E0B457" opacity="0.8"/>
+        </svg>
+      </div>
+      <p class="fw-bold mb-1 text-basic">Tu carrito está vacío</p>
+      <small class="text-hint">Agrega productos desde el catálogo</small>
+    </div>
+  } @else {
+    <nb-list class="cart-items-list">
+      @for (item of cartService.items(); track item.product.id) {
+        <nb-list-item class="cart-item">
+          <div class="item-image">
+            <img [src]="item.product?.picture_main?.url || 'https://cdn-icons-png.flaticon.com/512/85/85488.png'"
+                 [alt]="item.product.name">
+          </div>
+          <div class="item-body">
+            <div class="item-details">
+              <h6 class="item-name text-truncate">{{item.product.name}}</h6>
+              <div class="item-price-row">
+                <span class="item-price">{{item.product.price | currency:'PEN':'symbol':'1.2-2':'es-PE'}}</span>
+                <span class="item-subtotal">
+                  {{(item.product.price * item.quantity) | currency:'PEN':'symbol':'1.2-2':'es-PE'}}
+                </span>
+              </div>
+            </div>
+            <div class="item-quantity d-flex align-items-center gap-1">
+              <button nbButton ghost size="tiny" status="primary" (click)="removeOne(item.product.id)">
+                <nb-icon icon="minus-outline"></nb-icon>
+              </button>
+              <span class="qty-value">{{item.quantity}}</span>
+              <button nbButton ghost size="tiny" status="primary" (click)="addOne(item.product.id)">
+                <nb-icon icon="plus-outline"></nb-icon>
+              </button>
+              <button nbButton ghost size="tiny" status="danger" class="ms-1" (click)="removeItem(item.product.id)">
+                <nb-icon icon="trash-2-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+        </nb-list-item>
+      }
+    </nb-list>
+
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong>{{cartService.total() | currency:'PEN':'symbol':'1.2-2':'es-PE'}}</strong>
+      </div>
+      <button nbButton status="success" fullWidth size="medium" (click)="checkout()">
+        <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+        Proceder al Pago
+      </button>
+      <button nbButton ghost status="danger" size="small" fullWidth class="mt-2" (click)="cartService.clearCart()">
+        <nb-icon icon="trash-2-outline"></nb-icon>
+        Vaciar carrito
+      </button>
+    </div>
+  }
+</div>
