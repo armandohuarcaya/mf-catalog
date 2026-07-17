@@ -17,14 +17,35 @@ export class CatalogComponent implements OnInit{
   products:any[] = [];
   dialogService = inject(NbDialogService);
   catalogServ = inject(SCatalogService);
+  shopping:any[] = [];
   constructor() {}
   ngOnInit(): void {
     this.getProducts();
   }
   getProducts(): void {
-    const params = {};
+    const params = {
+      page: 1,
+      size: 100
+    };
     this.catalogServ.getProducts$(params).subscribe((products:any) => {
-      this.products = products.products || [];
+      // this.products = products.products || [];
+      // this.products = (products.data && products.data.filter((a:any) => a.gallery.length>0)) || [];
+      this.products = products.data || [];
+      if (this.products.length>0) {
+        this.products.map((b:any) => {
+          b.picture_main = {url: 'https://cdn-icons-png.flaticon.com/512/85/85488.png'};
+          if (b.gallery.length>0) {
+            b.gallery.map((c:any) => {
+              if (c.main) {
+                b.picture_main = c;
+              }
+            })
+            if (!b.picture_main) {
+              b.picture_main = b.gallery[0];
+            }
+          }
+        });
+      }
     });
   }
   openModal(item:any) {
@@ -56,5 +77,9 @@ export class CatalogComponent implements OnInit{
 
       }
     });
+  }
+  addItem() {
+    // const personas: Persona[] = JSON.parse(localStorage.getItem('personas') || '[]');
+    // localStorage.setItem('mf-shoping', JSON.stringify({personas: holas}));
   }
 }

@@ -27,7 +27,7 @@ export class MCatalogDetailComponent implements OnInit{
 		config.pauseOnHover = true;
   }
   ngOnInit(): void {
-    this.item.images = [this.item.images]
+    // this.item.images = [this.item.images]
     console.log(this.item);
   }
   closeModal() {

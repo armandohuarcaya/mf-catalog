@@ -13,7 +13,7 @@
         <button nbButton size="medium" fullWidth  status="primary"  style="text-transform: initial;" (click)="openLogin('')">Iniciar sesión</button>
       </div>
       <div class="col-md-1" style="text-align: right;">
-        <button nbButton size="medium" status="primary"><nb-icon icon="shopping-cart-outline"></nb-icon></button>
+        <button nbButton size="medium" status="primary"><nb-icon icon="shopping-cart-outline"></nb-icon>2</button>
       </div>
     </div>
   </nb-card-header>
@@ -30,8 +30,10 @@
         <div class="col-6 col-md-3">
         <nb-card class="cardHover">
           <nb-card-header (click)="openModal(item)">
-            <img  [src]="item?.thumbnail" alt="Photo of a Shiba Inu"
-            height="auto" width="100%">
+            <img  [src]="item?.picture_main?.url" alt="Photo of a Shiba Inu"
+             class="images">
+            <!-- <img  [src]="item?.thumbnail" alt="Photo of a Shiba Inu"
+            height="auto" width="100%"> -->
           </nb-card-header>
           <nb-card-body>
             <div class="d-flex">
@@ -42,7 +44,7 @@
 
               }
             </div>
-            <strong> {{item.title}}</strong><hr>
+            <strong> {{item.name}}</strong><hr>
             <label class="label">{{item.description}}</label>
           </nb-card-body>
           <nb-card-footer>
@@ -52,7 +54,7 @@
                   <nb-icon icon="eye-outline"></nb-icon>Detalle</button>
               </div>
               <div class="col-md-6">
-                <button nbButton size="tiny" fullWidth status="primary" style="text-transform: initial;">
+                <button nbButton size="tiny" fullWidth status="primary" style="text-transform: initial;" (click)="addItem()">
                   <nb-icon icon="shopping-cart-outline"></nb-icon> Agregar</button>
               </div>
             </div>

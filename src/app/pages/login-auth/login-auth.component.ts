@@ -39,6 +39,18 @@ export class LoginAuthComponent  implements OnInit, AfterViewInit {
     const payload = JSON.parse(atob(response.credential.split('.')[1]));
     console.log('USER:', payload);
 
+    const params = {
+      provider: 'GOOGLE',
+      idToken: response.credential,
+      email: payload.email,
+      password: ""
+    }
+    this.googleAuth.login$(params).subscribe((resp:any) => {
+      if (resp.success) {
+        alert('Éxito');
+      }
+    });
+
     // payload.sub -> id
     // payload.email
     // payload.name
